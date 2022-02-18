@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E7190E5E27BEEABE005CC05C /* CurrentWeatherCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7190E5D27BEEABE005CC05C /* CurrentWeatherCell.swift */; };
+		E7190E6127BEF631005CC05C /* HourlyWeatherCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7190E6027BEF631005CC05C /* HourlyWeatherCell.swift */; };
+		E7190E6327BF0F4E005CC05C /* HourlyWeatherCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7190E6227BF0F4E005CC05C /* HourlyWeatherCollectionViewCell.swift */; };
 		E7A8DE3D27B724DE00EF0EA6 /* DailyWeatherCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A8DE3C27B724DD00EF0EA6 /* DailyWeatherCell.swift */; };
 		E7E2C9A2278F09C300670BD5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E2C9A1278F09C300670BD5 /* AppDelegate.swift */; };
 		E7E2C9A4278F09C300670BD5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E2C9A3278F09C300670BD5 /* SceneDelegate.swift */; };
@@ -26,6 +29,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E7190E5D27BEEABE005CC05C /* CurrentWeatherCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherCell.swift; sourceTree = "<group>"; };
+		E7190E6027BEF631005CC05C /* HourlyWeatherCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyWeatherCell.swift; sourceTree = "<group>"; };
+		E7190E6227BF0F4E005CC05C /* HourlyWeatherCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyWeatherCollectionViewCell.swift; sourceTree = "<group>"; };
 		E7A8DE3C27B724DD00EF0EA6 /* DailyWeatherCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyWeatherCell.swift; sourceTree = "<group>"; };
 		E7E2C99E278F09C300670BD5 /* WeatherApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7E2C9A1278F09C300670BD5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -57,11 +63,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E7190E5F27BEF603005CC05C /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				E7A8DE3C27B724DD00EF0EA6 /* DailyWeatherCell.swift */,
+				E7190E5D27BEEABE005CC05C /* CurrentWeatherCell.swift */,
+				E7190E6027BEF631005CC05C /* HourlyWeatherCell.swift */,
+				E7190E6227BF0F4E005CC05C /* HourlyWeatherCollectionViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		E7A8DE3B27B7140100EF0EA6 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E7190E5F27BEF603005CC05C /* Cells */,
 				E7E2C9A5278F09C300670BD5 /* WeatherViewController.swift */,
-				E7A8DE3C27B724DD00EF0EA6 /* DailyWeatherCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -209,6 +226,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E7E2C9E227922E9000670BD5 /* DailyWeather.swift in Sources */,
+				E7190E6127BEF631005CC05C /* HourlyWeatherCell.swift in Sources */,
 				E7E2C9A6278F09C300670BD5 /* WeatherViewController.swift in Sources */,
 				E7E2C9D82791B1DF00670BD5 /* URL+Extensions.swift in Sources */,
 				E7E2C9DE27921F0900670BD5 /* Weather.swift in Sources */,
@@ -217,7 +235,9 @@
 				E7E2C9DC27921DF100670BD5 /* WeatherResponse.swift in Sources */,
 				E7E2C9E42792300500670BD5 /* Temperature.swift in Sources */,
 				E7E2C9E62792316D00670BD5 /* FeelsLikeTemperature.swift in Sources */,
+				E7190E6327BF0F4E005CC05C /* HourlyWeatherCollectionViewCell.swift in Sources */,
 				E7E2C9DA2791B4EE00670BD5 /* NetworkError.swift in Sources */,
+				E7190E5E27BEEABE005CC05C /* CurrentWeatherCell.swift in Sources */,
 				E7E2C9D32791AA3700670BD5 /* NetworkService.swift in Sources */,
 				E7E2C9E02792215A00670BD5 /* WeatherType.swift in Sources */,
 				E7E2C9A4278F09C300670BD5 /* SceneDelegate.swift in Sources */,

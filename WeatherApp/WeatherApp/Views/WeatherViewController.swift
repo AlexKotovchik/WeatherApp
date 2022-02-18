@@ -30,6 +30,7 @@ class WeatherViewController: UIViewController {
     
 }
 
+// MARK: - UI
 extension WeatherViewController {
     func setupViews() {
         createWeatherTable()
@@ -40,28 +41,43 @@ extension WeatherViewController {
     func createWeatherTable() {
         view.addSubview(weatherTableView)
         weatherTableView.dataSource = self
+        weatherTableView.delegate = self
         weatherTableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            weatherTableView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor),
-            weatherTableView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
-            weatherTableView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor),
-            weatherTableView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor)
+            weatherTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            weatherTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8),
+            weatherTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            weatherTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8)
         ])
         
-        weatherTableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        weatherTableView.register(DailyWeatherCell.self, forCellReuseIdentifier: "DailyWeatherCell")
+        weatherTableView.register(CurrentWeatherCell.self, forCellReuseIdentifier: "CurrentWeatherCell")
+        weatherTableView.register(HourlyWeatherCell.self, forCellReuseIdentifier: "HourlyWeatherCell")
     }
 }
 
+// MARK: - TableViewDataSource
 extension WeatherViewController: UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 100
+        return 1
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = "\(indexPath.row)"
+        let cell = tableView.dequeueReusableCell(withIdentifier: "HourlyWeatherCell", for: indexPath) as! HourlyWeatherCell
+//        cell.textLabel?.text = "\(indexPath.row)"
         return cell
     }
 
+}
+
+// MARK: - TableViewDelegate
+extension WeatherViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
+    }
 }
 
