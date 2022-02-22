@@ -8,24 +8,17 @@
 import UIKit
 
 class WeatherViewController: UIViewController {
+    var viewModel = WeatherViewModel()
+    
     var weatherTableView = UITableView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupViews()
-        // Do any additional setup after loading the view.
-        NetworkService().getCurrentLocationWeather(latitude: 84.0354, longitude: 27.4142) { [weak self] result in
-            DispatchQueue.main.async {
-                guard let self = self else { return }
-                switch result {
-                case let .success(weatherResponse):
-                    print(weatherResponse.timezone)
-                case let .failure(error):
-                    print(error)
-                }
-                
-            }
+        viewModel.getWeatherResponse { response in
+            print(response)
+            self.weatherTableView.reloadData()
         }
+        setupViews()
     }
     
 }
@@ -59,17 +52,35 @@ extension WeatherViewController {
 // MARK: - TableViewDataSource
 extension WeatherViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 3
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        switch section {
+        case 2:
+            return 7
+        default:
+            return 1
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "HourlyWeatherCell", for: indexPath) as! HourlyWeatherCell
-//        cell.textLabel?.text = "\(indexPath.row)"
-        return cell
+        switch indexPath.section {
+        case 0:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "CurrentWeatherCell", for: indexPath) as! CurrentWeatherCell
+            cell.currentWeather = viewModel.weatherResponse?.currentWeather
+            return cell
+        case 1:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "HourlyWeatherCell", for: indexPath) as! HourlyWeatherCell
+            cell.hourlyWeather = viewModel.weatherResponse?.hourlyWeather
+            return cell
+        case 2:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "DailyWeatherCell", for: indexPath) as! DailyWeatherCell
+            cell.dailyWeather = viewModel.weatherResponse?.dailyWeather[indexPath.row]
+            return cell
+        default:
+            return UITableViewCell()
+        }
     }
 
 }
@@ -77,7 +88,16 @@ extension WeatherViewController: UITableViewDataSource {
 // MARK: - TableViewDelegate
 extension WeatherViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
+        switch indexPath.section {
+        case 0:
+            return 150
+        case 1:
+            return 100
+        case 2:
+            return 60
+        default:
+            return 100
+        }
     }
 }
 

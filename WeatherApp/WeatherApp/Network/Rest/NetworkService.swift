@@ -51,12 +51,10 @@ extension NetworkService {
                       return
                   }
             guard let data = data,
-                  let jsonString = String(data: data, encoding: .utf8),
                   let model = try? JSONDecoder().decode(T.self, from: data) else {
                       completion(.failure(.badJSON))
                       return
                   }
-            print(jsonString)
             completion(.success(model))
         }
         task.resume()

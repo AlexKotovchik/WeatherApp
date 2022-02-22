@@ -9,10 +9,16 @@ import UIKit
 
 class HourlyWeatherCell: UITableViewCell {
     
+    var hourlyWeather: [Weather]? {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
+    
     var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.itemSize.height = 80
+        layout.itemSize = CGSize(width: 50, height: 80)
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(HourlyWeatherCollectionViewCell.self, forCellWithReuseIdentifier: "HourlyWeatherCollectionViewCell")
@@ -57,6 +63,7 @@ extension HourlyWeatherCell: UICollectionViewDelegateFlowLayout, UICollectionVie
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HourlyWeatherCollectionViewCell", for: indexPath) as! HourlyWeatherCollectionViewCell
+        cell.hourlyWeather = hourlyWeather?[indexPath.row]
         return cell
     }
 }

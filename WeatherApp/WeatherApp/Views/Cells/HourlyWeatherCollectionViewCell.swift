@@ -7,7 +7,25 @@
 
 import UIKit
 
+
 class HourlyWeatherCollectionViewCell: UICollectionViewCell {
+    
+    var hourlyWeather: Weather? {
+        didSet {
+            let time = hourlyWeather?.date ?? 0
+            let date = Date(timeIntervalSince1970: time)
+            let currentDate = Date()
+            if currentDate.toString(format: DateFormat.hours) == date.toString(format: DateFormat.hours) {
+                dateLabel.text = "Now"
+            } else {
+                dateLabel.text = date.toString(format: DateFormat.hours)
+            }
+            
+            let temperature = hourlyWeather?.temperature
+            temperatureLabel.text = temperature?.toString()?.temperature
+        }
+    }
+    
     var dateLabel: UILabel = {
         let label = UILabel()
         label.text = "10"
@@ -24,7 +42,6 @@ class HourlyWeatherCollectionViewCell: UICollectionViewCell {
     
     var temperatureLabel: UILabel = {
         let label = UILabel()
-        label.text = "5°C"
         label.textAlignment = .center
         return label
     }()

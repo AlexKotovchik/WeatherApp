@@ -9,16 +9,48 @@ import UIKit
 
 class CurrentWeatherCell: UITableViewCell {
     
-    var weatherTypeStack = UIStackView()
-    var weatherImageView = UIImageView()
-    var weatherDescriptionLabel = UILabel()
-    var temperatureLabel = UILabel()
-    var feelsLikeTemperatureLabel = UILabel()
-    var currentWeatherStack = UIStackView()
-
+    var currentWeather: Weather? {
+        didSet {
+            weatherDescriptionLabel.text = currentWeather?.weatherType.first?.description
+            let temperature = currentWeather?.temperature
+            temperatureLabel.text = temperature?.toString()?.temperature
+            let feelsLikeTemperature = currentWeather?.feelsLikeTemp
+            feelsLikeTemperatureLabel.text = feelsLikeTemperature?.toString()?.feelsLikeTemperature
+        }
+    }
+    
+    var weatherImageView: UIImageView = {
+        let imageView = UIImageView()
+        let image = UIImage(named: "wind")?.withRenderingMode(.alwaysTemplate)
+        imageView.image = image
+        imageView.contentMode = .scaleAspectFill
+        imageView.tintColor = UIColor.red
+        return imageView
+    }()
+    
+    var weatherDescriptionLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        return label
+    }()
+    
+    var temperatureLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.font = label.font.withSize(64)
+        return label
+    }()
+    
+    var feelsLikeTemperatureLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.font = label.font.withSize(12)
+        return label
+    }()
+                                                                                 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupCell()
+        setupStacks()
     }
     
     required init?(coder: NSCoder) {
@@ -34,42 +66,17 @@ class CurrentWeatherCell: UITableViewCell {
 }
 
 extension CurrentWeatherCell {
-    func setupCell() {
-        setupWeatherTypeStack()
-        setupTemperatureLabel()
-        setupFeelsLikeTemperatureLabel()
-        setupCurrentWeatherStack()
-    }
     
-    func setupWeatherTypeStack() {
-        let weatherImage = UIImage(named: "wind")
-        weatherImageView.image = weatherImage
-        weatherImageView.contentMode = .scaleAspectFill
-        
-        weatherDescriptionLabel.text = "overcast clouds"
-        weatherDescriptionLabel.textAlignment = .center
-        
+    func setupStacks() {
+        let weatherTypeStack = UIStackView()
         weatherTypeStack.axis = .horizontal
         weatherTypeStack.spacing = 4
         weatherTypeStack.alignment = .center
         weatherTypeStack.distribution = .equalSpacing
         weatherTypeStack.addArrangedSubview(weatherImageView)
         weatherTypeStack.addArrangedSubview(weatherDescriptionLabel)
-    }
-    
-    func setupTemperatureLabel() {
-        temperatureLabel.text = "5°C"
-        temperatureLabel.textAlignment = .center
-        temperatureLabel.font = temperatureLabel.font.withSize(64)
-    }
-    
-    func setupFeelsLikeTemperatureLabel() {
-        feelsLikeTemperatureLabel.text = "Feels like 4°C"
-        feelsLikeTemperatureLabel.textAlignment = .center
-        feelsLikeTemperatureLabel.font = feelsLikeTemperatureLabel.font.withSize(12)
-    }
-    
-    func setupCurrentWeatherStack() {
+        
+        let currentWeatherStack = UIStackView()
         currentWeatherStack.axis = .vertical
         currentWeatherStack.spacing = 4
         currentWeatherStack.alignment = .center
