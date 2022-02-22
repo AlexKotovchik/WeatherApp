@@ -82,12 +82,20 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		E77A2D5A27C52FED001AF8E5 /* WeatherViewController */ = {
+			isa = PBXGroup;
+			children = (
+				E7E2C9A5278F09C300670BD5 /* WeatherViewController.swift */,
+				E7190E6527BFFA77005CC05C /* WeatherViewModel.swift */,
+			);
+			path = WeatherViewController;
+			sourceTree = "<group>";
+		};
 		E7A8DE3B27B7140100EF0EA6 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E77A2D5A27C52FED001AF8E5 /* WeatherViewController */,
 				E7190E5F27BEF603005CC05C /* Cells */,
-				E7E2C9A5278F09C300670BD5 /* WeatherViewController.swift */,
-				E7190E6527BFFA77005CC05C /* WeatherViewModel.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";

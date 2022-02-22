@@ -6,13 +6,30 @@
 //
 
 import Foundation
+import CoreLocation
 
 class WeatherViewModel {
     
     var weatherResponse: WeatherResponse?
-    var networkService: NetworkService = NetworkService()
+    let networkService: NetworkService = NetworkService()
+    let manager = CLLocationManager()
+    
+    
     
     init() {
+    }
+    
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        switch manager.authorizationStatus {
+        case .notDetermined:
+            manager.requestWhenInUseAuthorization()
+        case .denied, .restricted:
+            ()
+        case .authorizedAlways, .authorizedWhenInUse:
+            manager.startUpdatingLocation()
+        @unknown default:
+            ()
+        }
     }
     
     func getWeatherResponse(completion: ((WeatherResponse) -> Void)?) {
@@ -29,5 +46,9 @@ class WeatherViewModel {
             }
         }
     }
+    
+}
+
+extension WeatherViewModel: CLLocationManagerDelegate {
     
 }
