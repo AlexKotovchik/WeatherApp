@@ -28,6 +28,7 @@ class HourlyWeatherCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupCollectionView()
+        self.backgroundColor = .clear
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -53,6 +54,7 @@ extension HourlyWeatherCell {
             collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 4),
             collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 4)
         ])
+        collectionView.backgroundColor = .clear
     }
 }
 

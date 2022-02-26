@@ -8,17 +8,37 @@
 import Foundation
 import CoreLocation
 
-class WeatherViewModel {
+class WeatherViewModel: NSObject {
     
-    var weatherResponse: WeatherResponse?
+    var weatherResponse: Observable<WeatherResponse?> = Observable(nil)
     let networkService: NetworkService = NetworkService()
-    let manager = CLLocationManager()
+    let locationManager = CLLocationManager()
     
-    
-    
-    init() {
+    override init() {
+        super.init()
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
     }
     
+    func getWeatherResponse(coordinates: CLLocationCoordinate2D) {
+        networkService.getCurrentLocationWeather(latitude: coordinates.latitude, longitude: coordinates.longitude) { [weak self] result in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                switch result {
+                case let .success(weatherResponse):
+                    self.weatherResponse.value = weatherResponse
+                    debugPrint(weatherResponse)
+                    debugPrint(self.weatherResponse.value)
+                case let .failure(error):
+                    print(error)
+                }
+            }
+        }
+    }
+    
+}
+
+extension WeatherViewModel: CLLocationManagerDelegate {
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         switch manager.authorizationStatus {
         case .notDetermined:
@@ -31,24 +51,14 @@ class WeatherViewModel {
             ()
         }
     }
-    
-    func getWeatherResponse(completion: ((WeatherResponse) -> Void)?) {
-        networkService.getCurrentLocationWeather(latitude: 84.0354, longitude: 27.4142) { [weak self] result in
-            DispatchQueue.main.async {
-                guard let self = self else { return }
-                switch result {
-                case let .success(weatherResponse):
-                    self.weatherResponse = weatherResponse
-                    completion?(weatherResponse)
-                case let .failure(error):
-                    print(error)
-                }
-            }
-        }
-    }
-    
-}
 
-extension WeatherViewModel: CLLocationManagerDelegate {
-    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error)
+    }
+
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.first else { return }
+        manager.stopUpdatingLocation()
+        getWeatherResponse(coordinates: location.coordinate)
+    }
 }

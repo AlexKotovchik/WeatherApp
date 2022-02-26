@@ -13,7 +13,7 @@ extension String {
     }
     
     var feelsLikeTemperature: String {
-        return "Feels like" + self + "°C"
+        return "Feels like " + self + "°C"
     }
     
     var windSpeed: String {

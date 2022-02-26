@@ -6,19 +6,18 @@
 //
 
 import UIKit
+import CoreLocation
 
 class WeatherViewController: UIViewController {
     var viewModel = WeatherViewModel()
     
-    var weatherTableView = UITableView()
+    var weatherTableView = UITableView(frame: .zero, style: .plain)
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.getWeatherResponse { response in
-            print(response)
-            self.weatherTableView.reloadData()
-        }
+        
         setupViews()
+        subscribe()
     }
     
 }
@@ -38,10 +37,14 @@ extension WeatherViewController {
         weatherTableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             weatherTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            weatherTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8),
+            weatherTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
             weatherTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            weatherTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8)
+            weatherTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0)
         ])
+        
+        weatherTableView.backgroundColor = .clear
+        weatherTableView.separatorColor = .white2
+        weatherTableView.separatorInset = UIEdgeInsets.zero
         
         weatherTableView.register(DailyWeatherCell.self, forCellReuseIdentifier: "DailyWeatherCell")
         weatherTableView.register(CurrentWeatherCell.self, forCellReuseIdentifier: "CurrentWeatherCell")
@@ -68,15 +71,15 @@ extension WeatherViewController: UITableViewDataSource {
         switch indexPath.section {
         case 0:
             let cell = tableView.dequeueReusableCell(withIdentifier: "CurrentWeatherCell", for: indexPath) as! CurrentWeatherCell
-            cell.currentWeather = viewModel.weatherResponse?.currentWeather
+            cell.currentWeather = viewModel.weatherResponse.value?.currentWeather
             return cell
         case 1:
             let cell = tableView.dequeueReusableCell(withIdentifier: "HourlyWeatherCell", for: indexPath) as! HourlyWeatherCell
-            cell.hourlyWeather = viewModel.weatherResponse?.hourlyWeather
+            cell.hourlyWeather = viewModel.weatherResponse.value?.hourlyWeather
             return cell
         case 2:
             let cell = tableView.dequeueReusableCell(withIdentifier: "DailyWeatherCell", for: indexPath) as! DailyWeatherCell
-            cell.dailyWeather = viewModel.weatherResponse?.dailyWeather[indexPath.row]
+            cell.dailyWeather = viewModel.weatherResponse.value?.dailyWeather[indexPath.row]
             return cell
         default:
             return UITableViewCell()
@@ -90,13 +93,23 @@ extension WeatherViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.section {
         case 0:
-            return 150
+            return 200
         case 1:
             return 100
         case 2:
             return 60
         default:
             return 100
+        }
+    }
+}
+
+// MARK: - Methods
+
+extension WeatherViewController {
+    func subscribe() {
+        viewModel.weatherResponse.observe(on: self) { [weak self] _ in
+            self?.weatherTableView.reloadData()
         }
     }
 }

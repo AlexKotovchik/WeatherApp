@@ -12,7 +12,8 @@ class HourlyWeatherCollectionViewCell: UICollectionViewCell {
     
     var hourlyWeather: Weather? {
         didSet {
-            let time = hourlyWeather?.date ?? 0
+            guard let hourlyWeather = hourlyWeather else { return }
+            let time = hourlyWeather.date
             let date = Date(timeIntervalSince1970: time)
             let currentDate = Date()
             if currentDate.toString(format: DateFormat.hours) == date.toString(format: DateFormat.hours) {
@@ -20,35 +21,32 @@ class HourlyWeatherCollectionViewCell: UICollectionViewCell {
             } else {
                 dateLabel.text = date.toString(format: DateFormat.hours)
             }
-            
-            let temperature = hourlyWeather?.temperature
-            temperatureLabel.text = temperature?.toString()?.temperature
+            let temperature = hourlyWeather.temperature
+            temperatureLabel.text = temperature.toString()?.temperature
+            weatherImageView.configure(imageName: hourlyWeather.weatherType.first?.main ?? "Default", color: .white1)
         }
     }
     
     var dateLabel: UILabel = {
         let label = UILabel()
-        label.text = "10"
         label.textAlignment = .center
+        label.textColor = .white1
         return label
     }()
     
-    var weatherImageView: UIImageView = {
-        let image = UIImage(named: "wind")
-        let imageView = UIImageView(image: image)
-        imageView.contentMode = .scaleAspectFill
-        return imageView
-    }()
+    var weatherImageView: UIImageView = UIImageView()
     
     var temperatureLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
+        label.textColor = .white1
         return label
     }()
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
         setupViews()
+        self.backgroundColor = .clear
     }
     
     required init?(coder: NSCoder) {
