@@ -27,7 +27,14 @@ extension WeatherViewController {
     func setupViews() {
         createWeatherTable()
         navigationController?.isNavigationBarHidden = true
-        view.backgroundColor = .lightGray
+        let gradient = CAGradientLayer()
+        gradient.frame = view.bounds
+        let topColor = UIColor(hexString: "#B1B1B1").cgColor
+        let bottomColor = UIColor(hexString: "#62B4FF").cgColor
+        gradient.colors = [topColor, bottomColor]
+        gradient.locations = [0.0, 1.0]
+        view.layer.insertSublayer(gradient, at: 0)
+//        view.backgroundColor = .lightGray
     }
     
     func createWeatherTable() {
