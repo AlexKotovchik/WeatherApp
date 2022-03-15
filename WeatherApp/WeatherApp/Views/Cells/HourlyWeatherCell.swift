@@ -22,6 +22,7 @@ class HourlyWeatherCell: UITableViewCell {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(HourlyWeatherCollectionViewCell.self, forCellWithReuseIdentifier: "HourlyWeatherCollectionViewCell")
+        collectionView.showsHorizontalScrollIndicator = false
         return collectionView
     }()
 

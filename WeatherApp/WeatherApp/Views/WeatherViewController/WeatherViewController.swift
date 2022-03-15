@@ -11,13 +11,20 @@ import CoreLocation
 class WeatherViewController: UIViewController {
     var viewModel = WeatherViewModel()
     
-    var weatherTableView = UITableView(frame: .zero, style: .plain)
+    var weatherTableView: UITableView = .init(frame: .zero, style: .plain)
+    var spinnerView: UIView?
+    var locationLabel: UILabel = .init()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupViews()
         subscribe()
+        weatherTableView.tableHeaderView = UIView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureNavigation()
     }
     
 }
@@ -26,15 +33,62 @@ class WeatherViewController: UIViewController {
 extension WeatherViewController {
     func setupViews() {
         createWeatherTable()
-        navigationController?.isNavigationBarHidden = true
+        createLocationLabel()
+        configureNavigation()
+        showActivityIndicator()
+//        navigationController?.isNavigationBarHidden = true
+        
+        view.backgroundColor = .white
+    }
+    
+    func configureNavigation() {
+        navigationController?.navigationBar.tintColor = .white1
+        navigationController?.navigationBar.prefersLargeTitles = false
+//        navigationController?.navigationBar.isTranslucent = true
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refresh))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(search))
+        
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        UINavigationBar.appearance().standardAppearance = appearance
+    }
+    
+    @objc func refresh() {
+        viewModel.locationManager.startUpdatingLocation()
+    }
+    
+    @objc func search() {
+        viewModel.presentSearchVC(self)
+    }
+    
+    func setGradient() {
         let gradient = CAGradientLayer()
         gradient.frame = view.bounds
-        let topColor = UIColor(hexString: "#B1B1B1").cgColor
-        let bottomColor = UIColor(hexString: "#62B4FF").cgColor
-        gradient.colors = [topColor, bottomColor]
+        let currentdate = Date().timeIntervalSince1970
+        guard let sunrise = viewModel.weatherResponse.value?.currentWeather.sunrise else { return }
+        guard let sunset = viewModel.weatherResponse.value?.currentWeather.sunset else { return }
+        if currentdate > sunrise && currentdate < sunset {
+            gradient.colors = [UIColor.dayBottomColor, UIColor.dayTopColor]
+        } else {
+            gradient.colors = [UIColor.nightTopColor, UIColor.nightBottomColor]
+        }
         gradient.locations = [0.0, 1.0]
         view.layer.insertSublayer(gradient, at: 0)
-//        view.backgroundColor = .lightGray
+    }
+    
+    func createLocationLabel() {
+        locationLabel.textAlignment = .center
+        locationLabel.font = UIFont.systemFont(ofSize: 32, weight: .semibold)
+        locationLabel.textColor = .white1
+        view.addSubview(locationLabel)
+        locationLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            locationLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            locationLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
+            locationLabel.bottomAnchor.constraint(equalTo: weatherTableView.topAnchor, constant: -8)
+        ])
+
     }
     
     func createWeatherTable() {
@@ -43,19 +97,67 @@ extension WeatherViewController {
         weatherTableView.delegate = self
         weatherTableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            weatherTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             weatherTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
             weatherTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             weatherTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0)
         ])
         
+        weatherTableView.showsVerticalScrollIndicator = false
         weatherTableView.backgroundColor = .clear
         weatherTableView.separatorColor = .white2
         weatherTableView.separatorInset = UIEdgeInsets.zero
+        weatherTableView.allowsSelection = false
         
         weatherTableView.register(DailyWeatherCell.self, forCellReuseIdentifier: "DailyWeatherCell")
         weatherTableView.register(CurrentWeatherCell.self, forCellReuseIdentifier: "CurrentWeatherCell")
         weatherTableView.register(HourlyWeatherCell.self, forCellReuseIdentifier: "HourlyWeatherCell")
+    }
+    
+    func showActivityIndicator() {
+        let spinnerView = UIView()
+        spinnerView.backgroundColor = .black.withAlphaComponent(0.5)
+        spinnerView.translatesAutoresizingMaskIntoConstraints = false
+     
+        let spinner = UIActivityIndicatorView(style: .large)
+        spinner.color = .white
+        spinner.startAnimating()
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        
+        spinnerView.addSubview(spinner)
+        view.addSubview(spinnerView)
+        
+        NSLayoutConstraint.activate([
+            spinnerView.topAnchor.constraint(equalTo: view.topAnchor),
+            spinnerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            spinnerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            spinnerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            
+            spinner.topAnchor.constraint(equalTo: spinnerView.topAnchor),
+            spinner.trailingAnchor.constraint(equalTo: spinnerView.trailingAnchor),
+            spinner.bottomAnchor.constraint(equalTo: spinnerView.bottomAnchor),
+            spinner.leadingAnchor.constraint(equalTo: spinnerView.leadingAnchor),
+        ])
+        
+        self.spinnerView = spinnerView
+    }
+    
+    func removeActivityIndicator() {
+//        spinnerView?.removeFromSuperview()
+//        spinnerView = nil
+        spinnerView?.isHidden = true
+    }
+    
+    func setLocationlableText() {
+        let imageAttachment = NSTextAttachment()
+        let image = UIImage(named: "Location")?.withRenderingMode(.alwaysTemplate)
+        imageAttachment.image = image
+        imageAttachment.image?.withTintColor(.white1)
+        let attachmentString = NSAttributedString(attachment: imageAttachment)
+        let labeltext = NSMutableAttributedString(string: "")
+        let locationtext = NSAttributedString(string: viewModel.currentLocation)
+        labeltext.append(attachmentString)
+        labeltext.append(locationtext)
+        locationLabel.attributedText = labeltext
     }
 }
 
@@ -102,7 +204,7 @@ extension WeatherViewController: UITableViewDelegate {
         case 0:
             return 200
         case 1:
-            return 100
+            return 120
         case 2:
             return 60
         default:
@@ -111,13 +213,27 @@ extension WeatherViewController: UITableViewDelegate {
     }
 }
 
-// MARK: - Methods
+// MARK: - Observing
 
 extension WeatherViewController {
     func subscribe() {
         viewModel.weatherResponse.observe(on: self) { [weak self] _ in
             self?.weatherTableView.reloadData()
+            self?.setGradient()
+        }
+        
+        viewModel.viewState.observe(on: self) { [weak self] state in
+            switch state {
+            case .loading:
+                self?.spinnerView?.isHidden = false
+                self?.navigationController?.navigationBar.isHidden = true
+            case .loaded:
+                self?.spinnerView?.isHidden = true
+                self?.setLocationlableText()
+                self?.navigationController?.navigationBar.isHidden = false
+            }
         }
     }
+
 }
 

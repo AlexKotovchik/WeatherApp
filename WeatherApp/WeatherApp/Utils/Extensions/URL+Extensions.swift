@@ -13,6 +13,7 @@ extension URL {
         guard let url = URL(string: path)?.appendingPathComponent(endpoint.rawValue),
               var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true) else { return nil}
         urlComponents.queryItems = queryParams.map { URLQueryItem(name: $0, value: "\($1)")}
+        debugPrint(urlComponents.url)
         return urlComponents.url
     }
 }

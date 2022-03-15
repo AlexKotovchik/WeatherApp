@@ -79,9 +79,9 @@ extension CurrentWeatherCell {
         
         let currentWeatherStack = UIStackView()
         currentWeatherStack.axis = .vertical
-        currentWeatherStack.spacing = 16
+        currentWeatherStack.spacing = 0
         currentWeatherStack.alignment = .center
-        currentWeatherStack.distribution = .fillProportionally
+        currentWeatherStack.distribution = .equalSpacing
         
         currentWeatherStack.addArrangedSubview(temperatureLabel)
         currentWeatherStack.addArrangedSubview(feelsLikeTemperatureLabel)
@@ -91,9 +91,11 @@ extension CurrentWeatherCell {
         contentView.addSubview(currentWeatherStack)
         NSLayoutConstraint.activate([
             currentWeatherStack.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            currentWeatherStack.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            currentWeatherStack.heightAnchor.constraint(equalToConstant: 150),
-            currentWeatherStack.widthAnchor.constraint(equalToConstant: 300)
+//            currentWeatherStack.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            currentWeatherStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
+            currentWeatherStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
+//            currentWeatherStack.heightAnchor.constraint(equalToConstant: 120),
+//            currentWeatherStack.widthAnchor.constraint(equalToConstant: 300)
         ])
     }
 }

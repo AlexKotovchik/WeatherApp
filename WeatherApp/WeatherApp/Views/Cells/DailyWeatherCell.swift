@@ -25,6 +25,7 @@ class DailyWeatherCell: UITableViewCell {
             let nightTemp = dailyWeather.temperature.night.toString()?.temperature ?? ""
             temperatureLabel.text = "\(dayTemp) / \(nightTemp)"
             weatherImageView.configure(imageName: dailyWeather.weatherType.first?.main ?? "Default", color: .white2)
+            windImageView.configure(imageName: "Wind", color: .white2)
         }
     }
     
@@ -42,11 +43,7 @@ class DailyWeatherCell: UITableViewCell {
         return label
     }()
     
-    var windImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.configure(imageName: "Wind", color: .white2)
-        return imageView
-    }()
+    var windImageView: UIImageView = UIImageView()
     
     let humidityLabel: UILabel = {
         let label = UILabel()
@@ -88,7 +85,7 @@ extension DailyWeatherCell {
         
         let temperatureStack = UIStackView()
         temperatureStack.axis = .vertical
-        temperatureStack.alignment = .leading
+        temperatureStack.alignment = .trailing
         temperatureStack.distribution = .fill
         temperatureStack.addArrangedSubview(temperatureLabel)
         

@@ -34,6 +34,10 @@
 		E7E2C9E227922E9000670BD5 /* DailyWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E2C9E127922E9000670BD5 /* DailyWeather.swift */; };
 		E7E2C9E42792300500670BD5 /* Temperature.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E2C9E32792300500670BD5 /* Temperature.swift */; };
 		E7E2C9E62792316D00670BD5 /* FeelsLikeTemperature.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E2C9E52792316C00670BD5 /* FeelsLikeTemperature.swift */; };
+		E7F86CAE27DE1DA800F6686A /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F86CAD27DE1DA800F6686A /* SearchViewController.swift */; };
+		E7F86CB027DE794800F6686A /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F86CAF27DE794800F6686A /* SearchViewModel.swift */; };
+		E7F86CB227DE7D4C00F6686A /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F86CB127DE7D4C00F6686A /* Place.swift */; };
+		E7F86CB427DE7DEF00F6686A /* PlaceResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F86CB327DE7DEF00F6686A /* PlaceResponse.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,6 +70,10 @@
 		E7E2C9E127922E9000670BD5 /* DailyWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyWeather.swift; sourceTree = "<group>"; };
 		E7E2C9E32792300500670BD5 /* Temperature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Temperature.swift; sourceTree = "<group>"; };
 		E7E2C9E52792316C00670BD5 /* FeelsLikeTemperature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeelsLikeTemperature.swift; sourceTree = "<group>"; };
+		E7F86CAD27DE1DA800F6686A /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		E7F86CAF27DE794800F6686A /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
+		E7F86CB127DE7D4C00F6686A /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
+		E7F86CB327DE7DEF00F6686A /* PlaceResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceResponse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +120,7 @@
 		E7A8DE3B27B7140100EF0EA6 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E7F86CAC27DE1D7500F6686A /* SearchViewController */,
 				E77A2D5A27C52FED001AF8E5 /* WeatherViewController */,
 				E7190E5F27BEF603005CC05C /* Cells */,
 			);
@@ -168,6 +177,8 @@
 				E7E2C9DF2792215A00670BD5 /* WeatherType.swift */,
 				E7E2C9E32792300500670BD5 /* Temperature.swift */,
 				E7E2C9E52792316C00670BD5 /* FeelsLikeTemperature.swift */,
+				E7F86CB127DE7D4C00F6686A /* Place.swift */,
+				E7F86CB327DE7DEF00F6686A /* PlaceResponse.swift */,
 			);
 			path = ResponseModels;
 			sourceTree = "<group>";
@@ -192,6 +203,15 @@
 				E751998827C7E8DE000181DE /* UIImage+Extensions.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		E7F86CAC27DE1D7500F6686A /* SearchViewController */ = {
+			isa = PBXGroup;
+			children = (
+				E7F86CAD27DE1DA800F6686A /* SearchViewController.swift */,
+				E7F86CAF27DE794800F6686A /* SearchViewModel.swift */,
+			);
+			path = SearchViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -275,13 +295,17 @@
 				E7E2C9DC27921DF100670BD5 /* WeatherResponse.swift in Sources */,
 				E7E2C9E42792300500670BD5 /* Temperature.swift in Sources */,
 				E7E2C9E62792316D00670BD5 /* FeelsLikeTemperature.swift in Sources */,
+				E7F86CB427DE7DEF00F6686A /* PlaceResponse.swift in Sources */,
 				E7190E6327BF0F4E005CC05C /* HourlyWeatherCollectionViewCell.swift in Sources */,
 				E7190E6627BFFA77005CC05C /* WeatherViewModel.swift in Sources */,
 				E7190E6827C12F51005CC05C /* Double+Extensions.swift in Sources */,
 				E7190E6C27C3D074005CC05C /* Date+Extensions.swift in Sources */,
 				E7190E6A27C13287005CC05C /* String+Extensions.swift in Sources */,
+				E7F86CAE27DE1DA800F6686A /* SearchViewController.swift in Sources */,
+				E7F86CB227DE7D4C00F6686A /* Place.swift in Sources */,
 				E751998927C7E8DE000181DE /* UIImage+Extensions.swift in Sources */,
 				E7E2C9DA2791B4EE00670BD5 /* NetworkError.swift in Sources */,
+				E7F86CB027DE794800F6686A /* SearchViewModel.swift in Sources */,
 				E7190E5E27BEEABE005CC05C /* CurrentWeatherCell.swift in Sources */,
 				E7E2C9D32791AA3700670BD5 /* NetworkService.swift in Sources */,
 				E7E2C9E02792215A00670BD5 /* WeatherType.swift in Sources */,
