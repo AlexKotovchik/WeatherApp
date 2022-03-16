@@ -95,8 +95,8 @@ extension WeatherViewController {
         weatherTableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             weatherTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
-            weatherTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            weatherTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0)
+            weatherTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            weatherTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0)
         ])
         
         weatherTableView.showsVerticalScrollIndicator = false
