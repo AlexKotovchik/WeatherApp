@@ -33,7 +33,7 @@ class SearchCitiesTableView: UITableViewController {
         NSLayoutConstraint.activate([
             citiesTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             citiesTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
-            citiesTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            citiesTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             citiesTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0)
         ])
         citiesTableView.showsVerticalScrollIndicator = false

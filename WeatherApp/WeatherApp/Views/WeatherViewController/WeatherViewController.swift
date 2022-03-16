@@ -43,7 +43,7 @@ extension WeatherViewController {
     func configureNavigation() {
         navigationController?.navigationBar.tintColor = .white1
         navigationController?.navigationBar.prefersLargeTitles = false        
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refresh))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "location"), style: .plain, target: self, action: #selector(refresh))
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(search))
         
         let appearance = UINavigationBarAppearance()
@@ -136,12 +136,6 @@ extension WeatherViewController {
         ])
         
         self.spinnerView = spinnerView
-    }
-    
-    func removeActivityIndicator() {
-//        spinnerView?.removeFromSuperview()
-//        spinnerView = nil
-        spinnerView?.isHidden = true
     }
     
     func setLocationlableText() {
