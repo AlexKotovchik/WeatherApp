@@ -36,16 +36,13 @@ extension WeatherViewController {
         createLocationLabel()
         configureNavigation()
         showActivityIndicator()
-//        navigationController?.isNavigationBarHidden = true
         
         view.backgroundColor = .white
     }
     
     func configureNavigation() {
         navigationController?.navigationBar.tintColor = .white1
-        navigationController?.navigationBar.prefersLargeTitles = false
-//        navigationController?.navigationBar.isTranslucent = true
-        
+        navigationController?.navigationBar.prefersLargeTitles = false        
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refresh))
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(search))
         

@@ -14,7 +14,7 @@ enum ViewState {
     case loaded
 }
 
-class WeatherViewModel: NSObject {
+class WeatherViewModel: NSObject, UITableViewDelegate {
     
     var weatherResponse: Observable<WeatherResponse?> = Observable(nil)
     var viewState: Observable<ViewState> = Observable(.loading)
@@ -22,6 +22,15 @@ class WeatherViewModel: NSObject {
     let locationManager = CLLocationManager()
     
     var currentLocation: String = ""
+    var currentCity: City? {
+        willSet {
+            guard let city = newValue else {
+                return
+            }
+            getWeatherResponse(coordinates: CLLocationCoordinate2D(latitude: city.coordinates.latitude, longitude: city.coordinates.longitude) )
+            currentLocation = city.name
+        }
+    }
     
     override init() {
         super.init()
@@ -38,8 +47,6 @@ class WeatherViewModel: NSObject {
                 switch result {
                 case let .success(weatherResponse):
                     self.weatherResponse.value = weatherResponse
-//                    debugPrint(weatherResponse)
-//                    debugPrint(self.weatherResponse.value)
                 case let .failure(error):
                     print(error)
                 }
@@ -49,6 +56,7 @@ class WeatherViewModel: NSObject {
     
     func presentSearchVC(_ vc: UIViewController) {
         let searchVC = SearchViewController()
+        searchVC.delegate = self
         searchVC.modalPresentationStyle = .fullScreen
         vc.navigationController?.pushViewController(searchVC, animated: true)
     }
@@ -83,4 +91,11 @@ extension WeatherViewModel: CLLocationManagerDelegate {
             self.currentLocation = place
         }
     }
+}
+
+extension WeatherViewModel: SearchViewControllerDelegate {
+    func setCurrentCity(_ city: City) {
+        self.currentCity = city
+    }
+    
 }

@@ -13,8 +13,6 @@ public typealias HeadersDict = [String: String]
 enum Endpoint: String {
     case weather = "weather"
     case oneCall = "onecall"
-    case directGeocoding = "direct"
-    case reverseGeocoding = "reverse"
     case city = "places"
 }
 
@@ -42,17 +40,7 @@ class NetworkService {
                     "appid": Config.apiKey,
                     "units": "metric",
                     "exclude": "minutely"],
-                completion: completion)
-    }
-    
-    func getPlaces(city: String,
-                  completion: @escaping (Result<[Place], NetworkError>) -> Void) {
-        getDataa(baseUrl: Config.geoUrl,
-                endpoint: .directGeocoding,
-                parameters: [
-                    "q": city,
-                    "appid": Config.apiKey,
-                    "limit": 10],
+                headers: [:],
                 completion: completion)
     }
     
@@ -76,6 +64,7 @@ extension NetworkService {
     func getData<T: Decodable>(baseUrl: String,
                                endpoint: Endpoint,
                                parameters: JSONDict,
+                               headers: HeadersDict,
                                completion: @escaping (Result<T, NetworkError>) -> Void) {
         guard let url = URL.url(with: baseUrl, endpoint: endpoint, queryParams: parameters) else {
             completion(.failure(.badUrl))
@@ -84,7 +73,7 @@ extension NetworkService {
         
         let request = NSMutableURLRequest(url: url)
         request.httpMethod = "GET"
-        request.allHTTPHeaderFields = [:]
+        request.allHTTPHeaderFields = headers
         
         let task = URLSession.shared.dataTask(with: request as URLRequest) { data, response, error in
             guard let response = response as? HTTPURLResponse,
@@ -94,34 +83,6 @@ extension NetworkService {
                   }
             guard let data = data,
                   let model = try? JSONDecoder().decode(T.self, from: data) else {
-                      completion(.failure(.badJSON))
-                      return
-            }
-            completion(.success(model))
-        }
-        task.resume()
-    }
-    
-    func getDataa<T: Decodable>(baseUrl: String,
-                               endpoint: Endpoint,
-                               parameters: JSONDict,
-                               completion: @escaping (Result<[T], NetworkError>) -> Void) {
-        guard let url = URL.url(with: baseUrl, endpoint: endpoint, queryParams: parameters) else {
-            completion(.failure(.badUrl))
-            return
-        }
-        
-        let request = NSMutableURLRequest(url: url)
-        request.httpMethod = "GET"
-        
-        let task = URLSession.shared.dataTask(with: request as URLRequest) { data, response, error in
-            guard let response = response as? HTTPURLResponse,
-                  (200...299).contains(response.statusCode) else {
-                      completion(.failure(.notFound))
-                      return
-                  }
-            guard let data = data,
-                  let model = try? JSONDecoder().decode([T].self, from: data) else {
                       completion(.failure(.badJSON))
                       return
             }

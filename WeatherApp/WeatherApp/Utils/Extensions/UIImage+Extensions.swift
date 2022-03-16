@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 
 extension UIImageView {
-    
     func configure(imageName: String, color: UIColor) {
         let image = UIImage(named: imageName)?.withRenderingMode(.alwaysTemplate)
         self.image = image

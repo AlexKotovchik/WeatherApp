@@ -61,7 +61,6 @@ class CurrentWeatherCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
-        // Configure the view for the selected state
     }
 
 }
@@ -91,11 +90,8 @@ extension CurrentWeatherCell {
         contentView.addSubview(currentWeatherStack)
         NSLayoutConstraint.activate([
             currentWeatherStack.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-//            currentWeatherStack.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             currentWeatherStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
             currentWeatherStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
-//            currentWeatherStack.heightAnchor.constraint(equalToConstant: 120),
-//            currentWeatherStack.widthAnchor.constraint(equalToConstant: 300)
         ])
     }
 }

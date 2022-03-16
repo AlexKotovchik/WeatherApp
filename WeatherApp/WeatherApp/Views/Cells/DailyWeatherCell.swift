@@ -32,6 +32,7 @@ class DailyWeatherCell: UITableViewCell {
     let dateLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
+        label.font = label.font.withSize(16)
         label.textColor = .white2
         return label
     }()
@@ -39,6 +40,7 @@ class DailyWeatherCell: UITableViewCell {
     var windLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
+//        label.font = label.font.withSize(16)
         label.textColor = .white2
         return label
     }()
@@ -48,6 +50,7 @@ class DailyWeatherCell: UITableViewCell {
     let humidityLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
+        label.font = label.font.withSize(16)
         label.textColor = .white2
         return label
     }()
@@ -57,6 +60,7 @@ class DailyWeatherCell: UITableViewCell {
     let temperatureLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
+        label.font = label.font.withSize(16)
         label.textColor = .white2
         return label
     }()

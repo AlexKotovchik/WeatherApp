@@ -29,7 +29,6 @@ extension UIColor {
     
     static let white1 = UIColor(hexString: "#FFFFFF")
     static let white2 = UIColor(hexString: "#FFFFFF").withAlphaComponent(0.8)
-    static let white3 = UIColor(hexString: "#FFFFFF").withAlphaComponent(0.0)
     static let dayTopColor = UIColor(hexString: "#B1B1B1").cgColor
     static let dayBottomColor = UIColor(hexString: "#62B4FF").cgColor
     static let nightTopColor = UIColor(hexString: "#132F58").cgColor
