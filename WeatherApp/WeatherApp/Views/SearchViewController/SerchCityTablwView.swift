@@ -33,7 +33,7 @@ class SearchCitiesTableView: UITableViewController {
         NSLayoutConstraint.activate([
             citiesTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             citiesTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
-            citiesTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            citiesTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             citiesTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0)
         ])
         citiesTableView.showsVerticalScrollIndicator = false
@@ -51,8 +51,6 @@ class SearchCitiesTableView: UITableViewController {
         configuration.text = city.name
         configuration.secondaryText = "\(city.country.name), \(city.adminDivision1.name)"
         cell.contentConfiguration = configuration
-        cell.textLabel?.text = "\(city.name), \(city.country.name), \(city.adminDivision1.name)"
-        cell.detailTextLabel?.text = city.country.name
         return cell
     }
     
@@ -60,7 +58,6 @@ class SearchCitiesTableView: UITableViewController {
         print("tap")
         let city = viewModel.cities.value[indexPath.row]
         delegate?.setNewCity(city)
-//        navigationController?.popViewController(animated: true)
         dismiss(animated: true, completion: nil)
     }
     

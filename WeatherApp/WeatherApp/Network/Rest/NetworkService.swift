@@ -46,7 +46,7 @@ class NetworkService {
     
     func getCities(cityPrefix: String,
                    completion: @escaping (Result<[City], NetworkError>) -> Void) {
-        getDataaa(baseUrl: Config.cityUrl,
+        getData(baseUrl: Config.cityUrl,
                   endpoint: .city,
                   parameters: [
                     "type": "City",
@@ -90,36 +90,5 @@ extension NetworkService {
         }
         task.resume()
     }
-    
-    func getDataaa<T: Decodable>(baseUrl: String,
-                                 endpoint: Endpoint,
-                                 parameters: JSONDict,
-                                 headers: HeadersDict,
-                                 completion: @escaping (Result<[T], NetworkError>) -> Void) {
-        guard let url = URL.url(with: baseUrl, endpoint: endpoint, queryParams: parameters) else {
-            completion(.failure(.badUrl))
-            return
-        }
-        
-        let request = NSMutableURLRequest(url: url,
-                                          cachePolicy: .useProtocolCachePolicy,
-                                          timeoutInterval: 10.0)
-        request.httpMethod = "GET"
-        request.allHTTPHeaderFields = headers
-        
-        let task = URLSession.shared.dataTask(with: request as URLRequest) { data, response, error in
-            guard let response = response as? HTTPURLResponse,
-                  (200...299).contains(response.statusCode) else {
-                      completion(.failure(.notFound))
-                      return
-                  }
-            guard let data = data,
-                  let model = try? JSONDecoder().decode([T].self, from: data) else {
-                      completion(.failure(.badJSON))
-                      return
-            }
-            completion(.success(model))
-        }
-        task.resume()
-    }
+
 }

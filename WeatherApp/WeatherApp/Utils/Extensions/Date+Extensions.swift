@@ -16,6 +16,7 @@ extension Date {
     func toString(format: DateFormat) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = format.rawValue
+        formatter.locale = Locale.current
         return formatter.string(from: self)
     }
 }

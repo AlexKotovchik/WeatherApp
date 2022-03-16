@@ -14,10 +14,10 @@ class DailyWeatherCell: UITableViewCell {
             guard let dailyWeather = dailyWeather else { return }
             let date = Date(timeIntervalSince1970: dailyWeather.date)
             let currentDate = Date()
-            if currentDate.toString(format: DateFormat.day) == date.toString(format: DateFormat.day) {
+            if currentDate.toString(format: .day) == date.toString(format: .day) {
                 dateLabel.text = "Today"
             } else {
-                dateLabel.text = date.toString(format: DateFormat.day)
+                dateLabel.text = date.toString(format: .day)
             }
             windLabel.text = dailyWeather.windSpeed.toString()?.windSpeed
             humidityLabel.text = dailyWeather.humidity.toString()?.humidity
