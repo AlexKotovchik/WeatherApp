@@ -9,7 +9,9 @@ import UIKit
 import CoreLocation
 
 class WeatherViewController: UIViewController {
-    var viewModel = WeatherViewModel()
+    var viewModel = WeatherViewModel {
+        self.showLocationDeniedAlert()
+    }
     
     var weatherTableView: UITableView = .init(frame: .zero, style: .plain)
     var spinnerView: UIView?
@@ -20,6 +22,9 @@ class WeatherViewController: UIViewController {
         setupViews()
         subscribe()
         weatherTableView.tableHeaderView = UIView()
+        viewModel.onLocationDenied = {
+            self.showLocationDeniedAlert()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -52,7 +57,8 @@ extension WeatherViewController {
     }
     
     @objc func refresh() {
-        viewModel.locationManager.startUpdatingLocation()
+//        viewModel.locationManager.startUpdatingLocation()
+        viewModel.checkLocationAccess()
     }
     
     @objc func search() {
@@ -95,7 +101,7 @@ extension WeatherViewController {
         weatherTableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             weatherTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
-            weatherTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            weatherTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             weatherTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0)
         ])
         
@@ -149,6 +155,23 @@ extension WeatherViewController {
         labeltext.append(attachmentString)
         labeltext.append(locationtext)
         locationLabel.attributedText = labeltext
+    }
+    
+    func showLocationDeniedAlert() {
+        let alert = UIAlertController(title: "Location", message: "The app have no access to locations", preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "Settings", style: .default, handler: { action in
+            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                        return
+                    }
+
+                    if UIApplication.shared.canOpenURL(settingsUrl) {
+                        UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                            print("Settings opened: \(success)") // Prints true
+                        })
+                    }
+        }))
+        alert.addAction(UIAlertAction(title: "Cancell", style: .cancel))
+        present(alert, animated: true)
     }
 }
 

@@ -26,6 +26,9 @@ struct Config {
         "x-rapidapi-host": "spott.p.rapidapi.com",
         "x-rapidapi-key": "436505aa62mshbc908ed0a735910p1e93c3jsn9551210e0d4a"
     ]
+    
+    static let currentLanguage = String(Locale.preferredLanguages.first?.prefix(2) ?? "en")
+    
 }
 
 class NetworkService {
@@ -39,7 +42,8 @@ class NetworkService {
                     "lon": longitude,
                     "appid": Config.apiKey,
                     "units": "metric",
-                    "exclude": "minutely"],
+                    "exclude": "minutely",
+                    "lang": Config.currentLanguage],
                 headers: [:],
                 completion: completion)
     }
@@ -52,7 +56,8 @@ class NetworkService {
                     "type": "City",
                     "skip": "0",
                     "limit": "10",
-                    "q": cityPrefix],
+                    "q": cityPrefix,
+                    "language": Config.currentLanguage],
                   headers: Config.cityhHeaders,
                   completion: completion)
     }

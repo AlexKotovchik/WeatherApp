@@ -13,14 +13,19 @@ extension String {
     }
     
     var feelsLikeTemperature: String {
-        return "Feels like " + self + "°C"
+        return "feels_like_temp_label".localized + " " + self + "°C"
     }
     
     var windSpeed: String {
-        return self + "km/h"
+        return self + "wind_label".localized
     }
     
     var humidity: String {
         return self + "%"
     }
+    
+    var localized: String {
+        NSLocalizedString(self, bundle: .main, comment: "")
+    }
+    
 }

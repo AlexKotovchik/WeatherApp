@@ -28,7 +28,7 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white1
-        self.title = "Cities"
+        self.title = "cities_title".localized
         setupViews()
     }
 
@@ -57,7 +57,7 @@ extension SearchViewController {
         searchController = UISearchController(searchResultsController: resultController)
         searchController?.searchResultsUpdater = resultController
         searchController?.searchBar.sizeToFit()
-        searchController?.searchBar.placeholder = "Search for city"
+        searchController?.searchBar.placeholder = "search_placeholder".localized
         searchController?.hidesNavigationBarDuringPresentation = true
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false

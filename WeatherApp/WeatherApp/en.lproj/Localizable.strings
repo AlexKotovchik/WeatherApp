@@ -1,0 +1,15 @@
+/* 
+  Localizable.strings
+  WeatherApp
+
+  Created by AlexKotov on 30.03.22.
+  
+*/
+
+"feels_like_temp_label"                   = "Feels like";
+"now_label"                               = "Now";
+"today_label"                             = "Today";
+"wind_label"                              = "km/h";
+"search_placeholder"                      = "Search for city";
+"cities_title"                            = "Cities";
+

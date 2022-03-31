@@ -17,7 +17,7 @@ class HourlyWeatherCollectionViewCell: UICollectionViewCell {
             let date = Date(timeIntervalSince1970: time)
             let currentDate = Date()
             if currentDate.toString(format: DateFormat.hours) == date.toString(format: DateFormat.hours) {
-                dateLabel.text = "Now"
+                dateLabel.text = "now_label".localized
             } else {
                 dateLabel.text = date.toString(format: DateFormat.hours)
             }
@@ -29,6 +29,7 @@ class HourlyWeatherCollectionViewCell: UICollectionViewCell {
     
     var dateLabel: UILabel = {
         let label = UILabel()
+        label.adjustsFontSizeToFitWidth = true
         label.textAlignment = .center
         label.textColor = .white1
         return label

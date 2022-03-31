@@ -14,12 +14,15 @@ enum ViewState {
     case loaded
 }
 
-class WeatherViewModel: NSObject, UITableViewDelegate {
+class WeatherViewModel: NSObject {
     
     var weatherResponse: Observable<WeatherResponse?> = Observable(nil)
     var viewState: Observable<ViewState> = Observable(.loading)
     let networkService: NetworkService = NetworkService()
+//    let locationService: LocationManager = LocationManager()
     let locationManager = CLLocationManager()
+    
+    var onLocationDenied: (() -> Void)?
     
     var currentLocation: String = ""
     var currentCity: City? {
@@ -32,9 +35,20 @@ class WeatherViewModel: NSObject, UITableViewDelegate {
         }
     }
     
-    override init() {
+//    override init() {
+//        super.init()
+//        locationManager.delegate = self
+//        checkLocationAccess()
+//        locationManager.requestWhenInUseAuthorization()
+////        locationService.manager.delegate = self
+////        locationService.manager.requestWhenInUseAuthorization()
+//    }
+    
+    init(onLocationDenied: (() -> Void)?) {
         super.init()
+        self.onLocationDenied = onLocationDenied
         locationManager.delegate = self
+        checkLocationAccess()
         locationManager.requestWhenInUseAuthorization()
     }
     
@@ -61,21 +75,34 @@ class WeatherViewModel: NSObject, UITableViewDelegate {
         vc.navigationController?.pushViewController(searchVC, animated: true)
     }
     
-}
-
-extension WeatherViewModel: CLLocationManagerDelegate {
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        switch manager.authorizationStatus {
-        case .notDetermined:
-            manager.requestWhenInUseAuthorization()
-        case .denied, .restricted:
-            ()
+    func checkLocationAccess() {
+        switch locationManager.authorizationStatus {
         case .authorizedAlways, .authorizedWhenInUse:
-            manager.startUpdatingLocation()
+            locationManager.startUpdatingLocation()
+        case .denied, .restricted:
+            onLocationDenied?()
+        case .notDetermined:
+            locationManager.requestWhenInUseAuthorization()
         @unknown default:
             ()
         }
     }
+    
+}
+
+extension WeatherViewModel: CLLocationManagerDelegate {
+//    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+//        switch manager.authorizationStatus {
+//        case .notDetermined:
+//            manager.requestWhenInUseAuthorization()
+//        case .denied, .restricted:
+//            onLocationDenied?()
+//        case .authorizedAlways, .authorizedWhenInUse:
+//            manager.startUpdatingLocation()
+//        @unknown default:
+//            ()
+//        }
+//    }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(error)

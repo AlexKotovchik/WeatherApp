@@ -15,7 +15,7 @@ class DailyWeatherCell: UITableViewCell {
             let date = Date(timeIntervalSince1970: dailyWeather.date)
             let currentDate = Date()
             if currentDate.toString(format: .day) == date.toString(format: .day) {
-                dateLabel.text = "Today"
+                dateLabel.text = "today_label".localized
             } else {
                 dateLabel.text = date.toString(format: .day)
             }
@@ -32,7 +32,8 @@ class DailyWeatherCell: UITableViewCell {
     let dateLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.font = label.font.withSize(16)
+//        label.adjustsFontSizeToFitWidth = true
+        label.font = label.font.withSize(14)
         label.textColor = .white2
         return label
     }()

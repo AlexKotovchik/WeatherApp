@@ -6,7 +6,10 @@
 //
 
 import Foundation
+import CoreLocation
 
 class LocationManager {
+    
+    let manager = CLLocationManager()
     
 }

@@ -1,0 +1,14 @@
+/* 
+  Localizable.strings
+  WeatherApp
+
+  Created by AlexKotov on 30.03.22.
+  
+*/
+
+"feels_like_temp_label"                   = "Чувствуется как";
+"now_label"                               = "Сейчас";
+"today_label"                             = "Сегодня";
+"wind_label"                              = "км/ч";
+"search_placeholder"                      = "Поиск города";
+"cities_title"                            = "Города";
