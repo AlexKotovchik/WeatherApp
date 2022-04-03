@@ -9,21 +9,23 @@ import UIKit
 import CoreLocation
 
 class WeatherViewController: UIViewController {
-    var viewModel = WeatherViewModel {
-        self.showLocationDeniedAlert()
-    }
+    var viewModel = WeatherViewModel()
     
     var weatherTableView: UITableView = .init(frame: .zero, style: .plain)
-    var spinnerView: UIView?
+    var spinnerView: UIView = .init()
+    var spinner: UIActivityIndicatorView = .init()
     var locationLabel: UILabel = .init()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.viewModel = WeatherViewModel(onLocationDenied: {
+            self.showLocationDeniedAlert()
+        })
         setupViews()
         subscribe()
         weatherTableView.tableHeaderView = UIView()
-        viewModel.onLocationDenied = {
-            self.showLocationDeniedAlert()
+        viewModel.onRequestFailed = {
+            self.showRequestFailedAlert()
         }
     }
     
@@ -140,8 +142,9 @@ extension WeatherViewController {
             spinner.bottomAnchor.constraint(equalTo: spinnerView.bottomAnchor),
             spinner.leadingAnchor.constraint(equalTo: spinnerView.leadingAnchor),
         ])
-        
+        self.spinner = spinner
         self.spinnerView = spinnerView
+//        self.spinnerView.isHidden = true
     }
     
     func setLocationlableText() {
@@ -158,7 +161,7 @@ extension WeatherViewController {
     }
     
     func showLocationDeniedAlert() {
-        let alert = UIAlertController(title: "Location", message: "The app have no access to locations", preferredStyle: UIAlertController.Style.alert)
+        let alert = UIAlertController(title: "Location", message: "The app have no access to locations, please change your privacy settings.", preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "Settings", style: .default, handler: { action in
             guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
                         return
@@ -170,7 +173,17 @@ extension WeatherViewController {
                         })
                     }
         }))
-        alert.addAction(UIAlertAction(title: "Cancell", style: .cancel))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        present(alert, animated: true)
+    }
+    
+    func showRequestFailedAlert() {
+        let alert = UIAlertController(title: "Unable to get response", message: "Something went wrong, please try again.", preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "Retry", style: .default, handler: { action in
+            guard let currentCoordinates = self.viewModel.currentCoordinates else { return }
+            self.viewModel.getWeatherResponse(coordinates: currentCoordinates)
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         present(alert, animated: true)
     }
 }
@@ -239,12 +252,14 @@ extension WeatherViewController {
         viewModel.viewState.observe(on: self) { [weak self] state in
             switch state {
             case .loading:
-                self?.spinnerView?.isHidden = false
+                self?.spinnerView.isHidden = false
                 self?.navigationController?.navigationBar.isHidden = true
             case .loaded:
-                self?.spinnerView?.isHidden = true
+                self?.spinnerView.isHidden = true
                 self?.setLocationlableText()
                 self?.navigationController?.navigationBar.isHidden = false
+            case .locationAccessDenied:
+                self?.spinner.isHidden = true
             }
         }
     }

@@ -12,6 +12,7 @@ import UIKit
 enum ViewState {
     case loading
     case loaded
+    case locationAccessDenied
 }
 
 class WeatherViewModel: NSObject {
@@ -22,15 +23,19 @@ class WeatherViewModel: NSObject {
 //    let locationService: LocationManager = LocationManager()
     let locationManager = CLLocationManager()
     
+    var onRequestFailed: (() -> Void)?
     var onLocationDenied: (() -> Void)?
     
     var currentLocation: String = ""
+    var currentCoordinates: CLLocationCoordinate2D?
     var currentCity: City? {
         willSet {
             guard let city = newValue else {
                 return
             }
-            getWeatherResponse(coordinates: CLLocationCoordinate2D(latitude: city.coordinates.latitude, longitude: city.coordinates.longitude) )
+            let currentCoordinates = CLLocationCoordinate2D(latitude: city.coordinates.latitude, longitude: city.coordinates.longitude)
+            getWeatherResponse(coordinates: currentCoordinates)
+            self.currentCoordinates = currentCoordinates
             currentLocation = city.name
         }
     }
@@ -44,7 +49,7 @@ class WeatherViewModel: NSObject {
 ////        locationService.manager.requestWhenInUseAuthorization()
 //    }
     
-    init(onLocationDenied: (() -> Void)?) {
+    init(onLocationDenied: (() -> Void)? = nil) {
         super.init()
         self.onLocationDenied = onLocationDenied
         locationManager.delegate = self
@@ -63,6 +68,7 @@ class WeatherViewModel: NSObject {
                     self.weatherResponse.value = weatherResponse
                 case let .failure(error):
                     print(error)
+                    self.onRequestFailed?()
                 }
             }
         }
@@ -80,6 +86,7 @@ class WeatherViewModel: NSObject {
         case .authorizedAlways, .authorizedWhenInUse:
             locationManager.startUpdatingLocation()
         case .denied, .restricted:
+            viewState.value = .locationAccessDenied
             onLocationDenied?()
         case .notDetermined:
             locationManager.requestWhenInUseAuthorization()
@@ -112,6 +119,7 @@ extension WeatherViewModel: CLLocationManagerDelegate {
         guard let location = locations.first else { return }
         manager.stopUpdatingLocation()
         getWeatherResponse(coordinates: location.coordinate)
+        currentCoordinates = location.coordinate
         let geocoder = CLGeocoder()
         geocoder.reverseGeocodeLocation(location) { places, error in
             guard let place = places?.first?.locality else { return }
