@@ -12,4 +12,10 @@
 "wind_label"                              = "km/h";
 "search_placeholder"                      = "Search for city";
 "cities_title"                            = "Cities";
-
+"location_alert_title"                    = "Location";
+"location_alert_message"                  = "The app have no access to locations, please change your privacy settings.";
+"settings_btn"                            = "Settings";
+"response_alert_title"                    = "Unable to get response";
+"response_alert_message"                  = "Something went wrong, please try again.";
+"retry_btn"                               = "Retry";
+"calcel_btn"                              = "Cancel";

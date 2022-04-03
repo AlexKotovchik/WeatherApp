@@ -18,15 +18,19 @@ class WeatherViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.viewModel = WeatherViewModel(onLocationDenied: {
-            self.showLocationDeniedAlert()
-        })
+//        self.viewModel = WeatherViewModel(onLocationDenied: {
+//            self.showLocationDeniedAlert()
+//        })
         setupViews()
         subscribe()
         weatherTableView.tableHeaderView = UIView()
+        viewModel.onLocationDenied = {
+            self.showLocationDeniedAlert()
+        }
         viewModel.onRequestFailed = {
             self.showRequestFailedAlert()
         }
+        viewModel.checkLocationAccess(manager: viewModel.locationManager)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -56,11 +60,11 @@ extension WeatherViewController {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithTransparentBackground()
         UINavigationBar.appearance().standardAppearance = appearance
+//        navigationController?.navigationBar.isHidden = true
     }
     
     @objc func refresh() {
-//        viewModel.locationManager.startUpdatingLocation()
-        viewModel.checkLocationAccess()
+        viewModel.checkLocationAccess(manager: viewModel.locationManager)
     }
     
     @objc func search() {
@@ -144,7 +148,6 @@ extension WeatherViewController {
         ])
         self.spinner = spinner
         self.spinnerView = spinnerView
-//        self.spinnerView.isHidden = true
     }
     
     func setLocationlableText() {
@@ -161,29 +164,29 @@ extension WeatherViewController {
     }
     
     func showLocationDeniedAlert() {
-        let alert = UIAlertController(title: "Location", message: "The app have no access to locations, please change your privacy settings.", preferredStyle: UIAlertController.Style.alert)
-        alert.addAction(UIAlertAction(title: "Settings", style: .default, handler: { action in
+        let alert = UIAlertController(title: "location_alert_title".localized, message: "location_alert_message".localized, preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "settings_btn".localized, style: .default, handler: { action in
             guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
                         return
                     }
-
+            
                     if UIApplication.shared.canOpenURL(settingsUrl) {
                         UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
-                            print("Settings opened: \(success)") // Prints true
+                            print("Settings opened: \(success)")
                         })
                     }
         }))
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alert.addAction(UIAlertAction(title: "calcel_btn".localized, style: .cancel))
         present(alert, animated: true)
     }
     
     func showRequestFailedAlert() {
-        let alert = UIAlertController(title: "Unable to get response", message: "Something went wrong, please try again.", preferredStyle: UIAlertController.Style.alert)
-        alert.addAction(UIAlertAction(title: "Retry", style: .default, handler: { action in
+        let alert = UIAlertController(title: "response_alert_title".localized, message: "response_alert_message".localized, preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "retry_btn".localized, style: .default, handler: { action in
             guard let currentCoordinates = self.viewModel.currentCoordinates else { return }
             self.viewModel.getWeatherResponse(coordinates: currentCoordinates)
         }))
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alert.addAction(UIAlertAction(title: "calcel_btn".localized, style: .cancel))
         present(alert, animated: true)
     }
 }
@@ -260,6 +263,7 @@ extension WeatherViewController {
                 self?.navigationController?.navigationBar.isHidden = false
             case .locationAccessDenied:
                 self?.spinner.isHidden = true
+                self?.navigationController?.navigationBar.isHidden = false
             }
         }
     }

@@ -20,7 +20,6 @@ class WeatherViewModel: NSObject {
     var weatherResponse: Observable<WeatherResponse?> = Observable(nil)
     var viewState: Observable<ViewState> = Observable(.loading)
     let networkService: NetworkService = NetworkService()
-//    let locationService: LocationManager = LocationManager()
     let locationManager = CLLocationManager()
     
     var onRequestFailed: (() -> Void)?
@@ -40,20 +39,9 @@ class WeatherViewModel: NSObject {
         }
     }
     
-//    override init() {
-//        super.init()
-//        locationManager.delegate = self
-//        checkLocationAccess()
-//        locationManager.requestWhenInUseAuthorization()
-////        locationService.manager.delegate = self
-////        locationService.manager.requestWhenInUseAuthorization()
-//    }
-    
-    init(onLocationDenied: (() -> Void)? = nil) {
+    override init() {
         super.init()
-        self.onLocationDenied = onLocationDenied
         locationManager.delegate = self
-        checkLocationAccess()
         locationManager.requestWhenInUseAuthorization()
     }
     
@@ -81,15 +69,15 @@ class WeatherViewModel: NSObject {
         vc.navigationController?.pushViewController(searchVC, animated: true)
     }
     
-    func checkLocationAccess() {
-        switch locationManager.authorizationStatus {
+    func checkLocationAccess(manager: CLLocationManager) {
+        switch manager.authorizationStatus {
         case .authorizedAlways, .authorizedWhenInUse:
-            locationManager.startUpdatingLocation()
+            manager.startUpdatingLocation()
         case .denied, .restricted:
             viewState.value = .locationAccessDenied
             onLocationDenied?()
         case .notDetermined:
-            locationManager.requestWhenInUseAuthorization()
+            manager.requestWhenInUseAuthorization()
         @unknown default:
             ()
         }
@@ -98,18 +86,9 @@ class WeatherViewModel: NSObject {
 }
 
 extension WeatherViewModel: CLLocationManagerDelegate {
-//    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-//        switch manager.authorizationStatus {
-//        case .notDetermined:
-//            manager.requestWhenInUseAuthorization()
-//        case .denied, .restricted:
-//            onLocationDenied?()
-//        case .authorizedAlways, .authorizedWhenInUse:
-//            manager.startUpdatingLocation()
-//        @unknown default:
-//            ()
-//        }
-//    }
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        checkLocationAccess(manager: manager)
+    }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(error)

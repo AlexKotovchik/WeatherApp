@@ -13,6 +13,7 @@ struct City: Decodable {
     let country: Country
     let adminDivision1: State
     let coordinates: Coordinates
+    let localizedName: String?
 }
 
 struct Country: Decodable {

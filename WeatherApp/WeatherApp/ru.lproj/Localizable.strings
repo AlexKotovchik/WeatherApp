@@ -12,3 +12,10 @@
 "wind_label"                              = "км/ч";
 "search_placeholder"                      = "Поиск города";
 "cities_title"                            = "Города";
+"location_alert_title"                    = "Геопозиция";
+"location_alert_message"                  = "У приложения нет доступа к вашей геопозиции, пожалуйста поменяйте настройки приватности.";
+"settings_btn"                            = "Настройки";
+"response_alert_title"                    = "Невозможно получить ответ от сервера";
+"response_alert_message"                  = "Что-то пошло не так, попробуйте еще раз.";
+"retry_btn"                               = "Повторить";
+"calcel_btn"                              = "Отмена";

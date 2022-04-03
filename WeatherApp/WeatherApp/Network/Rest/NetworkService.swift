@@ -24,7 +24,7 @@ struct Config {
     
     static let cityhHeaders = [
         "x-rapidapi-host": "spott.p.rapidapi.com",
-        "x-rapidapi-key": "436505aa62mshbc908ed0a735910p1e93c3jsn9551210e0d4a"
+        "x-rapidapi-key": "a419aaab77msh50eb8838810e2cdp1736f4jsna40189e9c02a"
     ]
     
     static let currentLanguage = String(Locale.preferredLanguages.first?.prefix(2) ?? "en")

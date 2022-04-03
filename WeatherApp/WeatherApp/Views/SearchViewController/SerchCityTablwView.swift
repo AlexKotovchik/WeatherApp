@@ -48,7 +48,7 @@ class SearchCitiesTableView: UITableViewController {
         let cell = citiesTableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         var configuration = cell.defaultContentConfiguration()
         let city = viewModel.cities.value[indexPath.row]
-        configuration.text = city.name
+        configuration.text = city.localizedName ?? city.name
         configuration.secondaryText = "\(city.country.name), \(city.adminDivision1.name)"
         cell.contentConfiguration = configuration
         return cell
