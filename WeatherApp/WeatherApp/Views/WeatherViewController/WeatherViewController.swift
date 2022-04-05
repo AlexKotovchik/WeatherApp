@@ -18,9 +18,6 @@ class WeatherViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        self.viewModel = WeatherViewModel(onLocationDenied: {
-//            self.showLocationDeniedAlert()
-//        })
         setupViews()
         subscribe()
         weatherTableView.tableHeaderView = UIView()
@@ -30,7 +27,6 @@ class WeatherViewController: UIViewController {
         viewModel.onRequestFailed = {
             self.showRequestFailedAlert()
         }
-        viewModel.checkLocationAccess(manager: viewModel.locationManager)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -60,7 +56,6 @@ extension WeatherViewController {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithTransparentBackground()
         UINavigationBar.appearance().standardAppearance = appearance
-//        navigationController?.navigationBar.isHidden = true
     }
     
     @objc func refresh() {
@@ -79,6 +74,7 @@ extension WeatherViewController {
         guard let sunset = viewModel.weatherResponse.value?.currentWeather.sunset else { return }
         if currentdate > sunrise && currentdate < sunset {
             gradient.colors = [UIColor.dayBottomColor, UIColor.dayTopColor]
+            
         } else {
             gradient.colors = [UIColor.nightTopColor, UIColor.nightBottomColor]
         }
@@ -270,3 +266,8 @@ extension WeatherViewController {
 
 }
 
+extension UINavigationController {
+    open override var preferredStatusBarStyle: UIStatusBarStyle {
+        return topViewController?.preferredStatusBarStyle ?? .default
+    }
+}

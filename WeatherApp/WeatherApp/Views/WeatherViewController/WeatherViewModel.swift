@@ -21,6 +21,7 @@ class WeatherViewModel: NSObject {
     var viewState: Observable<ViewState> = Observable(.loading)
     let networkService: NetworkService = NetworkService()
     let locationManager = CLLocationManager()
+    var locationIsUpdated: Bool = false
     
     var onRequestFailed: (() -> Void)?
     var onLocationDenied: (() -> Void)?
